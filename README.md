@@ -10,7 +10,7 @@ Start rabbitMQ: `docker-compose up`
 
 Import the project as Gradle Project in you IDE
 
-Start the Application class as Java Application
+Start the `Application class` as Java Application
 
 Open the RabbitMq management Interface at: http://localhost:15672  (user: admin, password: admin)
 
@@ -28,6 +28,8 @@ Insert as payload:
   "kpis":["1","2","3"]
 }
 ```
+
+Click on `Publish message`
 
 In the console of you IDE you can see the following logs:
 
@@ -52,6 +54,8 @@ Insert as payload:
   "message": "user1"
 }
 ```
+
+Click on `Publish message`
 
 In the console of you IDE you can see the following logs:
 
@@ -78,6 +82,8 @@ Insert as payload:
 ```
 WRONG JSON FORMAT
 ```
+
+Click on `Publish message`
 
 In the console of you IDE you can see the following logs:
 
