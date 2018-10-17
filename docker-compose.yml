@@ -1,0 +1,15 @@
+version: "3.4"
+services:
+    broker:
+      image: "rabbitmq:3.7.2-management"
+      hostname: "test.broker"
+      ports:
+        - "15672:15672"
+        - "5672:5672"
+      environment:
+        - RABBITMQ_ERLANG_COOKIE=e34565ujyhnr43fesd3
+        - RABBITMQ_DEFAULT_VHOST=/
+        - RABBITMQ_DEFAULT_USER=admin
+        - RABBITMQ_DEFAULT_PASS=admin
+        - RABBITMQ_USE_LONGNAME=true
+
