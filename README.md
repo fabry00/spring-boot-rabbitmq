@@ -14,7 +14,7 @@ Start the `Application class` as Java Application
 
 Open the RabbitMq management Interface at: http://localhost:15672  (user: admin, password: admin)
 
-Select exchanges --> mydomain.KPIS
+Select `exchanges` --> `mydomain.KPIS`
 
 Expand `Publish message`
 
@@ -38,7 +38,7 @@ In the console of you IDE you can see the following logs:
 2018-10-17 16:10:46.442  INFO 4416 --- [containerKpis-1] Application                              : ---> kpisEvent DECODED, windowId: 1522751098000-1522752198000
 ```
 
-Select exchanges -->myevent.ALERT
+Select `exchanges` --> `myevent.ALERT`
 
 Expand `Publish message`
 
@@ -71,7 +71,7 @@ To test it:
 
 Open the RabbitMq management Interface at: http://localhost:15672
 
-Select exchanges --> mydomain.KPIS
+Select `exchanges` --> `mydomain.KPIS`
 
 Expand `Publish message`
 
