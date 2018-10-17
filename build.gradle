@@ -1,0 +1,90 @@
+//#########################################
+//         VARIBLES
+//#########################################
+
+version = '1.0.0'
+
+//#########################################
+//         PLUGINS
+//#########################################
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+apply plugin: 'checkstyle'
+apply plugin: 'jacoco'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+eclipse {
+	classpath {
+		 containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+		 containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
+	}
+}
+
+//#########################################
+//         COMPATIBILITY
+//#########################################
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+//#########################################
+//         REPOSITORY CONFIGURATION
+//#########################################
+
+buildscript {
+  repositories {
+  	jcenter()
+  }
+  dependencies {
+    classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.0.5.RELEASE'
+  }
+}
+
+repositories {
+  jcenter()
+}
+
+//#########################################
+//         TASKS
+//#########################################
+task wrapper(type: Wrapper) {
+ gradleVersion = '4.6' 
+}
+
+
+task getHomeDir {
+    println gradle.gradleHomeDir
+}
+
+//#########################################
+//         DEPLOY AS FAT JAR
+//#########################################
+bootJar {
+    baseName = project.name
+    version =  project.version
+}
+
+//#########################################
+//         PROJECT DEPENDENCIES
+//#########################################
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:Finchley.SR1"
+	}
+}
+dependencies {
+
+		implementation 'com.google.code.gson:gson:2.8.2'
+
+		// Spring boot
+		implementation 'org.springframework.boot:spring-boot-starter-amqp'
+		implementation 'org.springframework.cloud:spring-cloud-starter-config'
+		implementation 'org.springframework.boot:spring-boot-starter-actuator'
+		implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Use JUnit test framework
+    testImplementation 'junit:junit:4.12'
+}
+
