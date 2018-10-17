@@ -2,9 +2,11 @@
 
 To test it:
 
+Clone the project
+
 `cd  PROJECT_FOLDER`
 
-Start rabbitMQ: `dcocker-compose up`
+Start rabbitMQ: `docker-compose up`
 
 Import the project as Gradle Project in you IDE
 
