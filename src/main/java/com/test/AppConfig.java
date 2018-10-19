@@ -1,20 +1,27 @@
 package com.test;
 
-import com.test.domain.EventAlert;
-import com.test.domain.EventKpisCollected;
-
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.messaging.converter.MessageConversionException;
+import org.springframework.util.ErrorHandler;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.test.domain.EventAlert;
+import com.test.domain.EventKpisCollected;
 
 @Configuration
 public class AppConfig {
@@ -36,6 +43,31 @@ public class AppConfig {
   @Bean
   public Helper helper() {
     return new Helper();
+  }
+  
+  @Bean
+  public ErrorHandler errorHandler() {
+    return new BrokerExceptionHandler();
+  }
+
+  @Bean
+  public MessageConverter jsonConverter() {
+    Gson gson = new GsonBuilder().create();
+    return new MessageConverter() {
+
+      @Override
+      public Message toMessage(Object object, MessageProperties messageProperties) throws MessageConversionException {
+        System.out.println("toMessage");
+        return new Message(gson.toJson(object).getBytes(), messageProperties);
+      }
+
+      @Override
+      public Object fromMessage(Message message) throws MessageConversionException {
+        System.out.println("fromMessage");
+        message.getMessageProperties().setContentType("application/json");
+        throw new UnsupportedOperationException();
+      }
+    };
   }
 
   @Bean
@@ -80,7 +112,8 @@ public class AppConfig {
     SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
     container.setConnectionFactory(connectionFactory);
     container.setDefaultRequeueRejected(false);
-    container.setErrorHandler(new BrokerExceptionHandler());
+    container.setErrorHandler(errorHandler());
+    container.setMessageConverter(jsonConverter());
     container.setQueueNames(getQueueKpis());
     container.setMessageListener(listenerKpisAdapter);
     return container;
@@ -93,6 +126,8 @@ public class AppConfig {
     SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
     container.setConnectionFactory(connectionFactory);
     container.setDefaultRequeueRejected(false);
+    container.setErrorHandler(errorHandler());
+    container.setMessageConverter(jsonConverter());
     container.setQueueNames(getQueueAlert());
     container.setMessageListener(listenerAlertAdapter);
     return container;

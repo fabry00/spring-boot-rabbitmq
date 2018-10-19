@@ -29,12 +29,12 @@ public class Application {
     SpringApplication.run(Application.class, args);
   }
 
-  public void kpisEvent(byte[] body) throws UnsupportedEncodingException {
+  public void kpisEvent(KpisMessage message) throws UnsupportedEncodingException {
     logger.log(Level.INFO, "---> kpisEvent RECEIVED");
 
-    final String messageRaw = new String(body, EventKpisCollected.ENCODING);
+    //final String messageRaw = new String(body, EventKpisCollected.ENCODING);
 
-    KpisMessage message = new EventKpisCollected().decode(messageRaw);
+   // KpisMessage message = new EventKpisCollected().decode(messageRaw);
 
     logger.log(Level.INFO, "---> kpisEvent DECODED, windowId: " + message.getWindowId());
   }
